@@ -1,0 +1,141 @@
+Towards a Decentralized Asset Layer:
+Integrating Runes with the Bitcoin Lightning Network
+Authors:
+Runes over Lightning Initiative (RoLI)
+GitHub Repo
+
+Abstract
+This paper explores a novel implementation path for enabling Rune-based fungible tokens to operate over the Bitcoin Lightning Network. Unlike Taproot Assets, which rely on an off-chain proof model and indexer infrastructure, the proposed Rune-Lightning design prioritizes full on-chain verifiability, trust-minimized off-chain settlement, and optional asset redemption using burn-based settlement channels. We present a high-level architecture, explore critical challenges (e.g., dust mitigation, off-chain state tracking, double-spend prevention), and propose a clean integration path leveraging LND (Go) and Rune client tools (Rust). This work contributes toward building a Bitcoin-native, resilient, and trust-aware token layer that extends beyond speculative use.
+
+1. Introduction
+Bitcoin’s UTXO model and decentralized consensus guarantee unmatched settlement assurances. However, Bitcoin's lack of a native tokenization standard has led to the rise of alternatives like Ethereum-based ERC‑20s, often compromising on decentralization, permanence, and verification.
+
+Recent innovations like Taproot Assets and Runes aim to anchor fungible tokens directly into Bitcoin’s base layer. While Taproot Assets enable off-chain scalability and Lightning integration through cryptographic proofs, they rely on an external indexer ecosystem and lack full recoverability. In contrast, Runes are entirely on-chain, stateless, and require no auxiliary proofs—but do not yet support Lightning.
+
+This research proposes a Rune-over-Lightning framework: a decentralized, Lightning-compatible mechanism for transacting Rune tokens with minimal trust and without proof dependencies.
+
+2. Background
+2.1 Runes Protocol
+Runes are Bitcoin-native fungible tokens inscribed directly into transaction outputs using Bitcoin Script (OP_RETURN) with "Runestones" that encode issuance, transfers, and burns. They are:
+
+On-chain only (stateless, immutable)
+
+Fully recoverable (no indexer needed)
+
+Trustless by design
+
+Runes include a burn mechanism: transferring to an OP_RETURN output with an edict pointer can signal destruction.
+
+2.2 Taproot Assets
+Taproot Assets (TA) are off-chain token proofs anchored in Taproot outputs. They enable Lightning compatibility via LND-based channels but:
+
+Rely on proof syncing with off-chain storage
+
+Can be lost if proofs are not preserved
+
+Require asset-aware channel funding and complex coordination
+
+3. Core Design Philosophy
+Our proposal builds on three principles:
+
+Principle	Taproot Assets	Runes over Lightning (Proposed)
+Verification	Off-chain + Anchor	On-chain only
+Survivability	Needs live ecosystem	Survives as long as Bitcoin
+Lightning Model	Native, but complex	Simpler, to-be-built
+Redemption	Trust + Delegation	Trust-anchored via burn proof
+
+4. Architecture Overview
+4.1 Key Components
+Rune UTXO Locking: Lock Rune-carrying UTXOs as part of Lightning channel funding.
+
+Off-chain Rune Balances: Tracked by participant nodes within channels.
+
+Burn-on-Close Model: Settlement triggers a burn to OP_RETURN, providing chain-native receipt for redemption.
+
+Issuer Optionality: Asset issuer may offer fiat/asset redemption to a burn address via off-chain oracles, without requiring global on-chain settlement.
+
+5. Technical Flow
+5.1 Channel Opening
+A user funds a Lightning channel with a Bitcoin UTXO that contains Runes.
+
+A portion of the UTXO value represents the token balance.
+
+Rune metadata (e.g., ticker, amount) is mapped and tracked off-chain between participants.
+
+5.2 Off-Chain Transfers
+Tokens move via balance updates in Lightning invoices.
+
+Each participant tracks state, e.g.:
+
+makefile
+Copy
+Edit
+NodeA: +100 DOG
+NodeB: -100 DOG
+5.3 Channel Close + On-Chain Burn
+If users want to settle on-chain:
+
+They send the Rune off-chain to a predefined Lightning burn address.
+
+This triggers a settlement output to an OP_RETURN with edict, signaling burn.
+
+Users claim redemption with the burn tx proof.
+
+6. Dust Mitigation Strategy
+A major issue with on-chain settlement of tokens is dust explosion—where large numbers of small-value token outputs require Bitcoin UTXOs above the dust threshold (~546 sats).
+
+Our Solution:
+Fractional ownership off-chain: Minimize chain footprint.
+
+Burn-and-redeem model: Burn 1000 DOG in a single transaction and allow fractional redemption by issuer without on-chain fragmentation.
+
+Only settle to chain if necessary: The default state remains off-chain, reducing UTXO bloat.
+
+7. Trust, Issuance & Redemption
+Trust is always implicit when using fiat-backed assets like USDT or USDC. Even with fully on-chain tokens, the user must trust the issuer for redemption.
+
+Our system preserves:
+
+On-chain accountability via public burn transactions
+
+Off-chain redemption flexibility (e.g., fiat transfer, BTC payment, asset swap)
+
+This enables:
+
+Non-chain redemption pathways (e.g., send Runes over Lightning → burn → receive USD in bank)
+
+Low-friction user flows with verifiable proof
+
+8. Implementation Stack
+Layer	Language / Tool
+Lightning Integration	Go (via LND)
+Rune Parsing & Logic	Rust (via ord and custom tools)
+Testing Environment	Docker, Regtest, LND
+Future Extensions	TLV or Custom RPC in LND
+
+9. Challenges & Future Work
+State Sync: Ensuring consensus over off-chain Rune balances.
+
+Atomic Burns: Preventing double-claim via burn replay.
+
+Lightning Message Extension: Defining a BOLT or TLV to carry Rune transfer data.
+
+Index-Free Claiming: Exploring stateless burn proofs for redemption.
+
+Tooling: Developer SDKs, CLI tools, and testnet faucet integration.
+
+10. Conclusion
+Runes offer a uniquely Bitcoin-aligned approach to token issuance: permanent, minimal, and on-chain. By extending Runes to Lightning via a simple UTXO locking model and burn-on-close strategy, we unlock scalable payments, optional redemption, and proof-free asset survivability—without compromising Bitcoin’s ethos.
+
+This approach is not only possible, but necessary if Bitcoin is to serve as the final layer of financial truth—tokens included.
+
+References
+Taproot Assets Protocol Spec (Lightning Labs)
+
+Rune Protocol Design (Casey Rodarmor)
+
+BOLTs (Bitcoin Lightning Network specifications)
+
+Ordinal Theory Handbook
+
+Bitcoin Core and LND documentation

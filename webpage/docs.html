@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Runes over Lightning Documentation - Technical proposals, research papers, protocol enhancements, and community suggestions for Bitcoin-native tokens on Lightning Network.">
+    <meta name="keywords" content="Bitcoin, Lightning Network, Runes, Documentation, Technical Proposals, Research Papers, Protocol Enhancements">
+    <meta name="author" content="Runes over Lightning Initiative (ROL)">
+    <meta property="og:title" content="Runes over Lightning Documentation">
+    <meta property="og:description" content="Technical documentation, proposals, and research for Runes over Lightning integration">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://github.com/Runes-over-Lightning-Initiative-ROL/runes-lightning-dev">
+    
+    <title>Documentation - Runes over Lightning</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">Runes over Lightning</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#why-matters">Why It Matters</a></li>
+                <li><a href="index.html#features">Features</a></li>
+                <li><a href="index.html#comparison">Comparison</a></li>
+                <li><a href="docs.html" class="active">Documentation</a></li>
+                <li><a href="index.html#use-cases">Use Cases</a></li>
+                <li><a href="index.html#contribute">Contribute</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <button id="theme-toggle" aria-label="Toggle theme">🌙</button>
+                <button class="hamburger" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Documentation Header -->
+    <section class="docs-header">
+        <div class="container">
+            <div class="docs-header-content">
+                <h1 class="docs-title">
+                    <span class="docs-icon">📄</span>
+                    Documentation
+                </h1>
+                <p class="docs-subtitle">
+                    Technical proposals, research papers, protocol enhancements, and community suggestions for Runes over Lightning integration.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Documentation Content -->
+    <section class="docs-content-section">
+        <div class="container">
+            <div class="accordion-container">
+                
+                <!-- Technical Proposals Section -->
+                <div class="accordion-item">
+                    <button class="accordion-header" aria-expanded="false">
+                        <span class="accordion-icon">🔧</span>
+                        <span class="accordion-title">Technical Proposals</span>
+                        <span class="accordion-toggle">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <h3>Rune-over-Lightning Transport Protocol</h3>
+                            <p>Proposed specification for transporting Rune assets over Lightning Network channels with proper TLV encoding and settlement mechanisms.</p>
+                            
+                            <h4>Key Components:</h4>
+                            <ul>
+                                <li>Custom TLV types for Rune asset data</li>
+                                <li>Channel capacity management for Rune balances</li>
+                                <li>Off-chain settlement flows</li>
+                                <li>On-chain finality mechanisms</li>
+                            </ul>
+                            
+                            <div class="proposal-status">
+                                <span class="status-badge status-draft">Draft</span>
+                                <span class="last-updated">Last updated: December 2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Research Papers Section -->
+                <div class="accordion-item">
+                    <button class="accordion-header" aria-expanded="false">
+                        <span class="accordion-icon">📚</span>
+                        <span class="accordion-title">Research Papers</span>
+                        <span class="accordion-toggle">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <h3>Bitcoin-Native Token Economics</h3>
+                            <p>Analysis of economic models for Rune assets with Lightning Network integration, including liquidity provision and fee structures.</p>
+                            
+                            <h4>Research Areas:</h4>
+                            <ul>
+                                <li>Token velocity and Lightning channel dynamics</li>
+                                <li>Cross-chain liquidity and atomic swaps</li>
+                                <li>Privacy considerations for Rune transfers</li>
+                                <li>Scalability implications of token-over-Lightning</li>
+                            </ul>
+                            
+                            <div class="paper-links">
+                                <a href="#" class="paper-link">📄 Full Paper (PDF)</a>
+                                <a href="#" class="paper-link">📊 Supplementary Data</a>
+                                <a href="#" class="paper-link">🎥 Presentation Slides</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Protocol Enhancements Section -->
+                <div class="accordion-item">
+                    <button class="accordion-header" aria-expanded="false">
+                        <span class="accordion-icon">⚙️</span>
+                        <span class="accordion-title">Protocol Enhancements</span>
+                        <span class="accordion-toggle">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <h3>Lightning BOLT Extensions</h3>
+                            <p>Proposed extensions to Lightning BOLT specifications to support Rune asset transport and settlement.</p>
+                            
+                            <h4>Enhancement Categories:</h4>
+                            <ul>
+                                <li>BOLT 2: Channel establishment with Rune support</li>
+                                <li>BOLT 4: Onion routing for Rune payments</li>
+                                <li>BOLT 7: Gossip protocol for Rune channels</li>
+                                <li>BOLT 11: Invoice format for Rune payments</li>
+                            </ul>
+                            
+                            <div class="enhancement-status">
+                                <span class="status-badge status-proposed">Proposed</span>
+                                <span class="status-badge status-implemented">Partially Implemented</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Future Work Section -->
+                <div class="accordion-item">
+                    <button class="accordion-header" aria-expanded="false">
+                        <span class="accordion-icon">🚧</span>
+                        <span class="accordion-title">Future Work</span>
+                        <span class="accordion-toggle">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <h3>Roadmap and Development Priorities</h3>
+                            <p>Planned development milestones and research directions for advancing Runes over Lightning integration.</p>
+                            
+                            <h4>Q1 2025:</h4>
+                            <ul>
+                                <li>Complete TLV specification for Rune transport</li>
+                                <li>Implement basic Rune settlement flows</li>
+                                <li>Develop testing framework for Lightning integration</li>
+                            </ul>
+                            
+                            <h4>Q2 2025:</h4>
+                            <ul>
+                                <li>Prototype Rune-over-Lightning payments</li>
+                                <li>Security audit of settlement mechanisms</li>
+                                <li>Community feedback and specification refinement</li>
+                            </ul>
+                            
+                            <h4>Q3 2025:</h4>
+                            <ul>
+                                <li>Production-ready implementation</li>
+                                <li>Integration with major Lightning implementations</li>
+                                <li>Documentation and developer tooling</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Community Suggestions Section -->
+                <div class="accordion-item">
+                    <button class="accordion-header" aria-expanded="false">
+                        <span class="accordion-icon">📤</span>
+                        <span class="accordion-title">Community Suggestions</span>
+                        <span class="accordion-toggle">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <h3>Community-Driven Ideas</h3>
+                            <p>Proposals and suggestions from the Bitcoin, Lightning, and Rune development communities.</p>
+                            
+                            <div class="suggestion-item">
+                                <h4>🎯 Atomic Swaps with Runes</h4>
+                                <p>Enable trustless cross-chain swaps using Runes as the intermediary asset with Lightning's instant finality.</p>
+                                <div class="suggestion-meta">
+                                    <span class="author">@bitcoin_dev</span>
+                                    <span class="votes">👍 23 votes</span>
+                                </div>
+                            </div>
+                            
+                            <div class="suggestion-item">
+                                <h4>🔐 Privacy-Preserving Rune Transfers</h4>
+                                <p>Implement CoinJoin-style privacy for Rune transfers over Lightning channels.</p>
+                                <div class="suggestion-meta">
+                                    <span class="author">@privacy_researcher</span>
+                                    <span class="votes">👍 18 votes</span>
+                                </div>
+                            </div>
+                            
+                            <div class="suggestion-item">
+                                <h4>🌐 Cross-Lightning-Network Rune Routing</h4>
+                                <p>Enable Rune payments across different Lightning Network implementations and node types.</p>
+                                <div class="suggestion-meta">
+                                    <span class="author">@lightning_core</span>
+                                    <span class="votes">👍 31 votes</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="docs-cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Have a Proposal or Idea?</h2>
+                <p>We welcome technical proposals, research contributions, and community suggestions. Open a pull request on GitHub to contribute to the project!</p>
+                <div class="cta-buttons">
+                    <a href="https://github.com/Runes-over-Lightning-Initiative-ROL/runes-lightning-dev" class="btn btn-primary">
+                        <span class="btn-icon">📝</span>
+                        Submit Proposal
+                    </a>
+                    <a href="https://github.com/Runes-over-Lightning-Initiative-ROL/runes-lightning-dev/issues" class="btn btn-secondary">
+                        <span class="btn-icon">💬</span>
+                        Open Discussion
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <span class="logo-icon">⚡</span>
+                        <span class="logo-text">Runes over Lightning</span>
+                    </div>
+                    <p>Bringing Bitcoin-native tokens to Lightning Network</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Documentation</h4>
+                    <ul class="footer-links">
+                        <li><a href="docs.html">Technical Docs</a></li>
+                        <li><a href="https://github.com/Runes-over-Lightning-Initiative-ROL/runes-lightning-dev/blob/main/README.md">Project README</a></li>
+                        <li><a href="https://docs.ordinals.com/runes">Runes Protocol</a></li>
+                        <li><a href="https://docs.lightning.engineering/">Lightning Docs</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Community</h4>
+                    <ul class="footer-links">
+                        <li><a href="https://github.com/Runes-over-Lightning-Initiative-ROL/runes-lightning-dev">GitHub</a></li>
+                        <li><a href="https://github.com/Runes-over-Lightning-Initiative-ROL/runes-lightning-dev/issues">Issues</a></li>
+                        <li><a href="https://github.com/Runes-over-Lightning-Initiative-ROL/runes-lightning-dev/pulls">Pull Requests</a></li>
+                        <li><a href="index.html#contribute">Contribute</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Runes over Lightning Initiative (ROL). Licensed under MIT.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="docs.js"></script>
+</body>
+</html> 
