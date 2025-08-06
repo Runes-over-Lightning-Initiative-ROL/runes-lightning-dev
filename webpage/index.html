@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Runes over Lightning - Bringing Bitcoin-native tokens to Lightning Network. Explore the future of Bitcoin-native fungible tokens with instant Lightning payments.">
+    <meta name="keywords" content="Bitcoin, Lightning Network, Runes, Taproot Assets, Stablecoins, Ordinals, Blockchain, Cryptocurrency">
+    <meta name="author" content="Runes over Lightning Initiative (ROL)">
+    <meta property="og:title" content="Runes over Lightning - Bitcoin-native tokens on Lightning">
+    <meta property="og:description" content="Bringing Bitcoin-native tokens to Lightning Network for instant, scalable payments">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://github.com/Runes-over-Lightning-Initiative-ROL/runes-lightning-dev">
+    
+    <title>Runes over Lightning – Bringing Bitcoin-native tokens to Lightning</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">Runes over Lightning</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#about">About</a></li>
+                <li><a href="#why-matters">Why It Matters</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#comparison">Comparison</a></li>
+                <li><a href="#docs">Documentation</a></li>
+                <li><a href="#use-cases">Use Cases</a></li>
+                <li><a href="#contribute">Contribute</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <button id="theme-toggle" aria-label="Toggle theme">🌙</button>
+                <button class="hamburger" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="hero-icon">⚡</span>
+                    Runes over Lightning
+                </h1>
+                <p class="hero-subtitle">Bringing Bitcoin-native tokens to Lightning Network</p>
+                <p class="hero-description">
+                    An open-source development environment for building, testing, and experimenting with Rune asset integration on the Bitcoin Lightning Network.
+                </p>
+                <div class="hero-buttons">
+                    <a href="https://github.com/Runes-over-Lightning-Initiative-ROL/runes-lightning-dev" class="btn btn-primary">View on GitHub</a>
+                    <a href="#docs" class="btn btn-secondary">Read Documentation</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-card">
+                    <div class="card-icon">🔗</div>
+                    <h3>Bitcoin-Native</h3>
+                    <p>Built on Bitcoin's security model</p>
+                </div>
+                <div class="hero-card">
+                    <div class="card-icon">⚡</div>
+                    <h3>Lightning Fast</h3>
+                    <p>Instant payments and settlements</p>
+                </div>
+                <div class="hero-card">
+                    <div class="card-icon">🛡️</div>
+                    <h3>Secure</h3>
+                    <p>Leverages Bitcoin's proven security</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <h2 class="section-title">About the Project</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>
+                        This project provides a dedicated development environment to explore how Rune assets can be issued, transferred, and settled over Lightning. 
+                        While Runes currently have no Lightning implementation, this repository aims to bridge Runes (Bitcoin-native fungible tokens) with Lightning's 
+                        instant payment capabilities in a simpler, more robust way than existing token-over-Lightning systems.
+                    </p>
+                    <p>
+                        Our goal is to research and define specifications for Rune-over-Lightning transport, prototype integration with existing Lightning nodes, 
+                        and test off-chain settlement flows including burn-at-close, dust-free exits, and redeem-on-burn models.
+                    </p>
+                </div>
+                <div class="about-stats">
+                    <div class="stat">
+                        <span class="stat-number">2</span>
+                        <span class="stat-label">Languages</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">⚡</span>
+                        <span class="stat-label">Lightning</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">🔗</span>
+                        <span class="stat-label">Bitcoin</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why It Matters Section -->
+    <section id="why-matters" class="section section-alt">
+        <div class="container">
+            <h2 class="section-title">Why Lightning Integration for Runes Matters</h2>
+            <div class="why-grid">
+                <div class="why-card">
+                    <div class="why-icon">🚀</div>
+                    <h3>Scalability</h3>
+                    <p>Lightning Network enables millions of transactions per second, making Rune transfers instant and cost-effective.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon">💰</div>
+                    <h3>Cost Efficiency</h3>
+                    <p>Eliminate high on-chain fees by settling Rune transfers off-chain through Lightning channels.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon">🔒</div>
+                    <h3>Security</h3>
+                    <p>Maintain Bitcoin's security model while enabling complex token operations through Lightning's trustless channels.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon">🌍</div>
+                    <h3>Global Adoption</h3>
+                    <p>Enable micro-payments and instant settlements for Rune-based applications worldwide.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section">
+        <div class="container">
+            <h2 class="section-title">Key Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Controlled Minting</h3>
+                    <p>Precise control over Rune supply with programmable minting rules and governance mechanisms.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔥</div>
+                    <h3>Burn-and-Mint Mechanism</h3>
+                    <p>Efficient token economics with controlled burning and minting for stable value preservation.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Lightning Integration</h3>
+                    <p>Seamless integration with Lightning Network for instant Rune transfers and settlements.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧹</div>
+                    <h3>UTXO & Dust Reduction</h3>
+                    <p>Optimized UTXO management to reduce blockchain bloat and improve network efficiency.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Section -->
+    <section id="comparison" class="section section-alt">
+        <div class="container">
+            <h2 class="section-title">Runes vs. Taproot Assets</h2>
+            <div class="comparison-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Runes</th>
+                            <th>Taproot Assets</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Bitcoin-Native</strong></td>
+                            <td>✅ Built on Bitcoin's security model</td>
+                            <td>⚠️ Requires additional infrastructure</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Lightning Integration</strong></td>
+                            <td>✅ Direct Lightning support</td>
+                            <td>❌ Limited Lightning compatibility</td>
+                        </tr>
+                        <tr>
+                            <td><strong>UTXO Efficiency</strong></td>
+                            <td>✅ Optimized for Bitcoin's UTXO model</td>
+                            <td>⚠️ Can create UTXO bloat</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Scalability</strong></td>
+                            <td>✅ Millions of TPS via Lightning</td>
+                            <td>⚠️ Limited by on-chain capacity</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cost</strong></td>
+                            <td>✅ Minimal fees via Lightning</td>
+                            <td>⚠️ Higher on-chain fees</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Adoption</strong></td>
+                            <td>✅ Growing Ordinals ecosystem</td>
+                            <td>⚠️ Newer, less established</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Documentation Section -->
+    <section id="docs" class="section">
+        <div class="container">
+            <h2 class="section-title">Technical Documentation</h2>
+            <div class="docs-content">
+                <div class="docs-overview">
+                    <h3>Architecture Overview</h3>
+                    <p>
+                        This project uses a hybrid multi-language architecture to bridge the on-chain Rune protocol with Lightning Network capabilities:
+                    </p>
+                    <ul>
+                        <li><strong>Go (Lightning Integration):</strong> LND gRPC client integration, custom TLV encoding</li>
+                        <li><strong>Rust (Rune Protocol):</strong> Ord client integration, Runestone decoding, settlement flows</li>
+                        <li><strong>Cross-Layer Integration:</strong> REST/gRPC APIs between services</li>
+                    </ul>
+                </div>
+                <div class="docs-links">
+                    <h3>Documentation Links</h3>
+                    <div class="docs-grid">
+                        <a href="https://github.com/Runes-over-Lightning-Initiative-ROL/runes-lightning-dev/blob/main/README.md" class="doc-link">
+                            <span class="doc-icon">📖</span>
+                            <span>Project README</span>
+                        </a>
+                        <a href="https://docs.ordinals.com/runes" class="doc-link">
+                            <span class="doc-icon">🔗</span>
+                            <span>Runes Protocol</span>
+                        </a>
+                        <a href="https://docs.lightning.engineering/" class="doc-link">
+                            <span class="doc-icon">⚡</span>
+                            <span>Lightning Docs</span>
+                        </a>
+                        <a href="https://github.com/lightning/bolts" class="doc-link">
+                            <span class="doc-icon">📋</span>
+                            <span>Lightning BOLTs</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section id="use-cases" class="section section-alt">
+        <div class="container">
+            <h2 class="section-title">Use Cases</h2>
+            <div class="use-cases-grid">
+                <div class="use-case-card">
+                    <div class="use-case-icon">💱</div>
+                    <h3>Stablecoins</h3>
+                    <p>Create Bitcoin-native stablecoins with instant Lightning settlements and global accessibility.</p>
+                </div>
+                <div class="use-case-card">
+                    <div class="use-case-icon">🔄</div>
+                    <h3>Cross-Chain Swaps</h3>
+                    <p>Enable trustless cross-chain asset swaps with Lightning's instant finality.</p>
+                </div>
+                <div class="use-case-card">
+                    <div class="use-case-icon">🏦</div>
+                    <h3>Fiat Redemption</h3>
+                    <p>Seamless fiat on/off ramps with Lightning's global payment network.</p>
+                </div>
+                <div class="use-case-card">
+                    <div class="use-case-icon">🎮</div>
+                    <h3>Gaming & NFTs</h3>
+                    <p>In-game currencies and NFT marketplaces with instant micro-transactions.</p>
+                </div>
+                <div class="use-case-card">
+                    <div class="use-case-icon">🏭</div>
+                    <h3>DeFi Protocols</h3>
+                    <p>Decentralized finance applications with Bitcoin-native tokens and Lightning speed.</p>
+                </div>
+                <div class="use-case-card">
+                    <div class="use-case-icon">🌐</div>
+                    <h3>Global Commerce</h3>
+                    <p>International trade and remittances with minimal fees and instant settlement.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contribute Section -->
+    <section id="contribute" class="section">
+        <div class="container">
+            <h2 class="section-title">Contribute</h2>
+            <div class="contribute-content">
+                <div class="contribute-text">
+                    <p>
+                        We welcome contributions from Bitcoin, Lightning, and Rune developers! This is an open-source project 
+                        that thrives on community involvement and technical innovation.
+                    </p>
+                </div>
+                <div class="contribute-grid">
+                    <div class="contribute-card">
+                        <div class="contribute-icon">💬</div>
+                        <h3>Discuss</h3>
+                        <p>Open GitHub issues for technical discussions and ideas</p>
+                    </div>
+                    <div class="contribute-card">
+                        <div class="contribute-icon">💻</div>
+                        <h3>Develop</h3>
+                        <p>Fork the repo, implement features, and submit PRs</p>
+                    </div>
+                    <div class="contribute-card">
+                        <div class="contribute-icon">🧪</div>
+                        <h3>Test</h3>
+                        <p>Run our sandbox locally, break things, and report findings</p>
+                    </div>
+                    <div class="contribute-card">
+                        <div class="contribute-icon">📝</div>
+                        <h3>Document</h3>
+                        <p>Help improve setup guides, diagrams, and protocol specs</p>
+                    </div>
+                </div>
+                <div class="contribute-cta">
+                    <a href="https://github.com/Runes-over-Lightning-Initiative-ROL/runes-lightning-dev" class="btn btn-primary">Join the Project</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <span class="logo-icon">⚡</span>
+                        <span class="logo-text">Runes over Lightning</span>
+                    </div>
+                    <p>Bringing Bitcoin-native tokens to Lightning Network</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Community</h4>
+                    <ul class="footer-links">
+                        <li><a href="https://github.com/Runes-over-Lightning-Initiative-ROL/runes-lightning-dev">GitHub</a></li>
+                        <li><a href="https://github.com/Runes-over-Lightning-Initiative-ROL/runes-lightning-dev/issues">Issues</a></li>
+                        <li><a href="https://github.com/Runes-over-Lightning-Initiative-ROL/runes-lightning-dev/pulls">Pull Requests</a></li>
+                        <li><a href="#docs">Documentation</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="https://docs.ordinals.com/runes">Runes Protocol</a></li>
+                        <li><a href="https://docs.lightning.engineering/">Lightning Docs</a></li>
+                        <li><a href="https://bitcoin.org/en/developer-documentation">Bitcoin Core</a></li>
+                        <li><a href="https://github.com/lightning/bolts">Lightning BOLTs</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Runes over Lightning Initiative (ROL). Licensed under MIT.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html> 
