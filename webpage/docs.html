@@ -72,21 +72,236 @@
                     </button>
                     <div class="accordion-content">
                         <div class="accordion-body">
-                            <h3>Rune-over-Lightning Transport Protocol</h3>
-                            <p>Proposed specification for transporting Rune assets over Lightning Network channels with proper TLV encoding and settlement mechanisms.</p>
-                            
-                            <h4>Key Components:</h4>
-                            <ul>
-                                <li>Custom TLV types for Rune asset data</li>
-                                <li>Channel capacity management for Rune balances</li>
-                                <li>Off-chain settlement flows</li>
-                                <li>On-chain finality mechanisms</li>
-                            </ul>
-                            
-                            <div class="proposal-status">
-                                <span class="status-badge status-draft">Draft</span>
-                                <span class="last-updated">Last updated: December 2024</span>
-                            </div>
+                            <article class="research-paper">
+                                <header class="paper-header">
+                                    <h3>Proposal: Burn-Based Redemption Mechanism for Runes on the Lightning Network</h3>
+                                    <div class="paper-meta">
+                                        <p><strong>Authors:</strong> Runes over Lightning Initiative (RoLI)</p>
+                                        <p><strong>Status:</strong> <span class="status-badge status-proposed">Proposed</span></p>
+                                        <p><strong>Category:</strong> Protocol Enhancement</p>
+                                    </div>
+                                </header>
+
+                                <section class="paper-section">
+                                    <h4>📌 Summary</h4>
+                                    <p>This proposal introduces a burn-based redemption mechanism to enable scalable, privacy-preserving, and trust-aligned off-chain settlement of Rune assets (especially stablecoins) on the Lightning Network. It solves the dust UTXO explosion problem, enables instant and individual redemption without channel closures, and maintains public accountability through on-chain burn commitments.</p>
+                                    
+                                    <p>We propose enhancing the Rune protocol to support:</p>
+                                    <ul>
+                                        <li>Off-chain burns over Lightning</li>
+                                        <li>On-chain minting by issuer or user with cryptographic proof</li>
+                                        <li>Optional reissuable flag for assets</li>
+                                    </ul>
+                                </section>
+
+                                <section class="paper-section">
+                                    <h4>🧠 Why This Is Needed</h4>
+                                    
+                                    <h5>⚠️ The Problem</h5>
+                                    <p>In its current form, Runes:</p>
+                                    <ul>
+                                        <li>Are fully on-chain, which is a strength for permanence, but a limitation for scalability.</li>
+                                        <li>Have no reissuance capability, meaning that once minted, tokens cannot be dynamically issued or re-minted.</li>
+                                        <li>Do not yet support Lightning Network routing, which is needed for real-world microtransactions and fast settlement.</li>
+                                    </ul>
+                                    
+                                    <p>If you try to move Rune assets onto Lightning today (via channel-based locking), the following problems emerge:</p>
+                                    
+                                    <h5>1. Dust Explosion on Channel Exit</h5>
+                                    <p>If a channel contains 1000 RUNE-USD distributed across 500 users (e.g., each holding 2 tokens), and they all wish to settle on-chain…</p>
+                                    <p>You would need 500 individual UTXOs to represent those 2-token balances.</p>
+                                    <p>That's 500+ dust outputs at 546 sats or more, leading to chain bloat and fee inefficiency.</p>
+                                    
+                                    <h5>2. Channel Fragmentation</h5>
+                                    <p>If one party wants to exit while others stay, you need to close and reopen Lightning channels.</p>
+                                    <p>This creates friction and cost for everyone.</p>
+                                    
+                                    <h5>3. No Issuer-Level Flexibility</h5>
+                                    <p>There is no mechanism for an issuer to accept tokens off-chain and reissue new ones when needed.</p>
+                                </section>
+
+                                <section class="paper-section">
+                                    <h4>🆚 How Taproot Assets Address This (and Their Limitations)</h4>
+                                    <p>Taproot Assets address off-chain movement and redemption by relying on:</p>
+                                    <ul>
+                                        <li>Off-chain proof chains (commitments embedded in Bitcoin Taproot outputs)</li>
+                                        <li>Live indexer infrastructure to validate ownership and double-spend resistance</li>
+                                        <li>Asset-aware channel construction in Lightning</li>
+                                    </ul>
+                                    
+                                    <h5>❌ Limitations of Taproot Assets:</h5>
+                                    <div class="comparison-table">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Weakness</th>
+                                                    <th>Description</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Proof Fragility</td>
+                                                    <td>Losing the off-chain proofs means losing access to the asset.</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Centralized Indexing</td>
+                                                    <td>Requires a live, trusted indexer to track asset state.</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Complex Lightning Integration</td>
+                                                    <td>Channels must be aware of specific asset states and sync off-chain proofs.</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>No Native Burn/Redemption</td>
+                                                    <td>No built-in way to burn Taproot Assets and claim fiat/off-chain value.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </section>
+
+                                <section class="paper-section">
+                                    <h4>✅ Our Proposed Solution</h4>
+                                    <p>We propose a burn-and-mint mechanism to enable:</p>
+                                    <ul>
+                                        <li>Off-chain redemption over Lightning</li>
+                                        <li>On-chain supply tracking</li>
+                                        <li>Zero-dust settlement</li>
+                                        <li>User-exit without global coordination</li>
+                                    </ul>
+                                    
+                                    <h5>🔄 Flow Summary</h5>
+                                    <ol>
+                                        <li><strong>Receive RUNE-USD over Lightning</strong><br>
+                                            User receives fungible stablecoin over LN</li>
+                                        <li><strong>User Sends to Burn Address (Off-Chain)</strong><br>
+                                            A special Lightning address controlled by the issuer<br>
+                                            Burn transaction is recorded in the LN channel state</li>
+                                        <li><strong>Issuer Marks RUNE-USD as Burned</strong><br>
+                                            Internal accounting updates<br>
+                                            Payout may be triggered in USD, BTC, USDT, etc.</li>
+                                        <li><strong>Issuer (or User) Posts Aggregate On-Chain Burn</strong><br>
+                                            For public transparency, OP_RETURN burn with edict pointer</li>
+                                        <li><strong>Optionally Mint New Tokens</strong><br>
+                                            Either the issuer or the user (via burn proof) can mint equivalent Runes on-chain if necessary</li>
+                                    </ol>
+                                </section>
+
+                                <section class="paper-section">
+                                    <h4>🧱 What Must Change in Rune Protocol</h4>
+                                    <div class="comparison-table">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Change</th>
+                                                    <th>Description</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>✅ Controlled Reissuance</td>
+                                                    <td>Add an optional flag (reissuable = true) for assets, allowing future minting by the issuer</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>✅ Burn Proof Format</td>
+                                                    <td>Standardize burn transaction metadata (e.g., OP_RETURN with signature or burn hash)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>✅ Mint from Burn</td>
+                                                    <td>Implement mint_from_burn() logic where valid burn proof allows controlled reissuance</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>✅ Lightning Integration</td>
+                                                    <td>Define how burn/redemption is reflected in LN channel state and wallet logic</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </section>
+
+                                <section class="paper-section">
+                                    <h4>💡 Advantages of This Approach</h4>
+                                    <div class="comparison-table">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Advantage</th>
+                                                    <th>Explanation</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>⚡ Frictionless Redemption</td>
+                                                    <td>No need to close Lightning channels or coordinate with other users</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>🧾 Transparent Supply</td>
+                                                    <td>Burn events can be posted on-chain in batch, preserving auditability</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>🪙 No Dust</td>
+                                                    <td>Avoids generating hundreds of UTXOs when users exit LN</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>🕵️‍♂️ Private</td>
+                                                    <td>No link between user's Lightning and on-chain wallet</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>🌐 Global Flexibility</td>
+                                                    <td>Issuers can settle in USD, BTC, PayPal, or any rail they support</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>🔒 Aligned with Bitcoin Ethos</td>
+                                                    <td>Minimalism, UTXO-based tracking, cryptographic proof, no heavy indexers</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>🔄 Modular</td>
+                                                    <td>Enables P2P swaps, cross-asset exits, and composable integrations</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </section>
+
+                                <section class="paper-section">
+                                    <h4>🌍 Real-World Applications</h4>
+                                    <ul>
+                                        <li>Lightning-native stablecoins (RUNE-USD, RUNE-EUR)</li>
+                                        <li>Cross-chain swaps (burn Rune, receive ETH)</li>
+                                        <li>Fiat payouts (burn via Lightning, receive USD in bank)</li>
+                                        <li>Lightning L2 DeFi (burn to trigger DAO redemption, protocol interactions)</li>
+                                    </ul>
+                                </section>
+
+                                <section class="paper-section">
+                                    <h4>🔚 Conclusion</h4>
+                                    <p>This proposal unlocks a powerful, low-friction, and scalable path for Runes to become not just an on-chain token standard, but a Lightning-native financial primitive.</p>
+                                    
+                                    <p>It allows Runes to:</p>
+                                    <ul>
+                                        <li>Retain their Bitcoin-aligned simplicity</li>
+                                        <li>Avoid the complexity and fragility of Taproot Assets</li>
+                                        <li>Compete with USDT/USDC in both functionality and efficiency</li>
+                                    </ul>
+                                    
+                                    <p>This is the missing bridge between Bitcoin-native assets and the scalability of Lightning — and it can be built.</p>
+                                </section>
+
+                                <div class="paper-actions">
+                                    <a href="#" class="btn btn-primary">
+                                        <span class="btn-icon">📝</span>
+                                        Submit Feedback
+                                    </a>
+                                    <a href="#" class="btn btn-secondary">
+                                        <span class="btn-icon">📄</span>
+                                        Download PDF
+                                    </a>
+                                    <a href="#" class="btn btn-secondary">
+                                        <span class="btn-icon">💬</span>
+                                        Discuss
+                                    </a>
+                                </div>
+                            </article>
                         </div>
                     </div>
                 </div>
