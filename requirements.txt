@@ -1,0 +1,45 @@
+# Core dependencies
+requests>=2.31.0
+click>=8.1.0
+pydantic>=2.0.0
+python-dotenv>=1.0.0
+
+# Bitcoin and Lightning
+bitcoin>=1.1.42
+lightning-python>=0.1.0
+lnprototest>=0.1.0
+
+# Rune and Ordinals
+ordinals>=0.1.0
+runes>=0.1.0
+
+# API and networking
+fastapi>=0.104.0
+uvicorn>=0.24.0
+grpcio>=1.59.0
+grpcio-tools>=1.59.0
+
+# Data handling
+pandas>=2.0.0
+numpy>=1.24.0
+pydantic>=2.0.0
+
+# Testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0
+
+# Development tools
+black>=23.0.0
+flake8>=6.0.0
+mypy>=1.5.0
+isort>=5.12.0
+
+# Documentation
+sphinx>=7.0.0
+sphinx-rtd-theme>=1.3.0
+
+# Utilities
+rich>=13.0.0
+typer>=0.9.0
+structlog>=23.0.0 
