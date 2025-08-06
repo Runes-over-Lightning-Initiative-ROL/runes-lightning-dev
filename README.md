@@ -44,8 +44,6 @@ Encourage collaboration with Bitcoin, Lightning, and Rune dev communities.
 - Git
 - **Go 1.21+** (for Lightning integration via LND)
 - **Rust 1.70+** (for Rune parsing and ord client)
-- Python 3.10+ (legacy scripting & tooling)
-- Node.js 18+ (optional, for front-end tools)
 
 ### 2. Clone the Repository
 
@@ -75,12 +73,6 @@ go mod download
 # Rust dependencies (for Rune tools)
 cd ../rust-rune
 cargo build
-
-# Python dependencies (legacy)
-pip install -r requirements.txt
-
-# Optional JS tools
-npm install
 ```
 
 ### 4. Start the Dev Environment
@@ -93,15 +85,20 @@ docker-compose up
 
 This launches:
 - Bitcoin Core (regtest mode)
-- Core Lightning node(s)
-- Rune parser service
-- Lightning gRPC/REST API gateway
+- LND node (for Go integration)
+- Ordinals indexer (for Rust integration)
 
 **Option B: Manual**
 
 ```bash
+# Start Bitcoin Core
 bitcoind -regtest -daemon
-lightningd --network=regtest --lightning-dir=./lightning-data
+
+# Start LND (for Go integration)
+lnd --network=regtest --bitcoin.active=1 --bitcoin.regtest=1
+
+# Start Ordinals indexer (for Rust integration)
+ord --bitcoin-rpc-url=http://localhost:18443 server
 ```
 
 ## 🏗 Programming Stack & Integration Strategy
@@ -147,15 +144,10 @@ runes-lightning-dev/
 │   │   ├── ord_client.rs   # Ord client integration
 │   │   └── settlement.rs   # Settlement/burn flows
 │   └── ...              # Rust tools and utilities
-├── docs/                # Protocol drafts, research notes
-├── specs/               # Draft Rune-over-Lightning specifications
-├── scripts/             # Helper scripts for testing & automation
-├── docker/              # Docker configs for Bitcoin & LN nodes
-├── examples/            # Example transactions & settlement flows
-├── tools/               # Cross-language integration utilities
-├── requirements.txt     # Python dependencies (legacy)
-├── package.json         # JS tooling dependencies
-└── README.md            # This file
+├── docker-compose.yml   # Development environment setup
+├── .gitignore          # Git ignore rules
+├── LICENSE             # MIT license
+└── README.md           # This file
 ```
 
 ## 🚀 Usage Examples

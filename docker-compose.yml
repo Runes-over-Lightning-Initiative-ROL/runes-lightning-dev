@@ -23,123 +23,59 @@ services:
       - "18444:18444"  # P2P
     volumes:
       - bitcoin_data:/bitcoin
-      - ./config/bitcoin.conf:/bitcoin/bitcoin.conf:ro
     networks:
       - runes-lightning-network
     restart: unless-stopped
 
-  # Core Lightning node (Alice)
-  lightning-alice:
-    image: elementsproject/lightning:latest
-    container_name: runes-lightning-alice
+  # LND node (for Go integration)
+  lnd:
+    image: lightninglabs/lnd:latest
+    container_name: runes-lightning-lnd
     command: >
-      lightningd
+      lnd
       --network=regtest
-      --bitcoin-rpcuser=bitcoin
-      --bitcoin-rpcpassword=bitcoin
-      --bitcoin-rpcport=18443
-      --bitcoin-rpcip=bitcoind
-      --log-level=debug
-      --bind-addr=0.0.0.0:9735
-      --announce-addr=lightning-alice:9735
-      --lightning-dir=/lightning
-      --plugin=/plugins/rune-plugin.py
+      --bitcoin.active=1
+      --bitcoin.regtest=1
+      --bitcoin.node=bitcoind
+      --bitcoind.rpcuser=bitcoin
+      --bitcoind.rpcpass=bitcoin
+      --bitcoind.rpchost=bitcoind
+      --bitcoind.rpcport=18443
+      --bitcoind.zmqpubrawblock=tcp://bitcoind:28332
+      --bitcoind.zmqpubrawtx=tcp://bitcoind:28333
+      --rpclisten=0.0.0.0:10009
+      --restlisten=0.0.0.0:8080
+      --listen=0.0.0.0:9735
+      --debuglevel=debug
     ports:
-      - "9735:9735"  # Lightning P2P
-      - "8080:8080"  # REST API
+      - "10009:10009"  # gRPC
+      - "8080:8080"    # REST API
+      - "9735:9735"    # Lightning P2P
     volumes:
-      - lightning_alice_data:/lightning
-      - ./plugins:/plugins:ro
-      - ./config/lightning-alice.conf:/lightning/config:ro
+      - lnd_data:/root/.lnd
     depends_on:
       - bitcoind
     networks:
       - runes-lightning-network
     restart: unless-stopped
 
-  # Core Lightning node (Bob)
-  lightning-bob:
-    image: elementsproject/lightning:latest
-    container_name: runes-lightning-bob
+  # Ordinals indexer (for Rust integration)
+  ord-indexer:
+    image: ghcr.io/casey/ord:latest
+    container_name: runes-lightning-ord
     command: >
-      lightningd
-      --network=regtest
-      --bitcoin-rpcuser=bitcoin
-      --bitcoin-rpcpassword=bitcoin
-      --bitcoin-rpcport=18443
-      --bitcoin-rpcip=bitcoind
-      --log-level=debug
-      --bind-addr=0.0.0.0:9736
-      --announce-addr=lightning-bob:9736
-      --lightning-dir=/lightning
-      --plugin=/plugins/rune-plugin.py
+      ord
+      --bitcoin-rpc-url=http://bitcoin:bitcoin@bitcoind:18443
+      --data-dir=/ord-data
+      server
+      --http-port=8081
+      --http-addr=0.0.0.0:8081
     ports:
-      - "9736:9736"  # Lightning P2P
-      - "8081:8080"  # REST API
+      - "8081:8081"  # Ordinals API
     volumes:
-      - lightning_bob_data:/lightning
-      - ./plugins:/plugins:ro
-      - ./config/lightning-bob.conf:/lightning/config:ro
+      - ord_data:/ord-data
     depends_on:
       - bitcoind
-    networks:
-      - runes-lightning-network
-    restart: unless-stopped
-
-  # Rune parser service
-  rune-parser:
-    build:
-      context: .
-      dockerfile: docker/Dockerfile.rune-parser
-    container_name: runes-lightning-parser
-    command: python -m rune_parser.server
-    ports:
-      - "8000:8000"  # API
-    volumes:
-      - ./tools:/app/tools:ro
-      - ./data:/app/data
-    depends_on:
-      - bitcoind
-    networks:
-      - runes-lightning-network
-    restart: unless-stopped
-
-  # Lightning API gateway
-  lightning-gateway:
-    build:
-      context: .
-      dockerfile: docker/Dockerfile.gateway
-    container_name: runes-lightning-gateway
-    command: python -m lightning_gateway.server
-    ports:
-      - "9000:9000"  # Gateway API
-    volumes:
-      - ./tools:/app/tools:ro
-      - ./config:/app/config:ro
-    depends_on:
-      - lightning-alice
-      - lightning-bob
-      - rune-parser
-    networks:
-      - runes-lightning-network
-    restart: unless-stopped
-
-  # Development tools
-  dev-tools:
-    build:
-      context: .
-      dockerfile: docker/Dockerfile.dev-tools
-    container_name: runes-lightning-dev-tools
-    command: tail -f /dev/null  # Keep container running
-    volumes:
-      - .:/app
-      - ./scripts:/app/scripts
-      - ./examples:/app/examples
-    working_dir: /app
-    depends_on:
-      - bitcoind
-      - lightning-alice
-      - lightning-bob
     networks:
       - runes-lightning-network
     restart: unless-stopped
@@ -147,9 +83,9 @@ services:
 volumes:
   bitcoin_data:
     driver: local
-  lightning_alice_data:
+  lnd_data:
     driver: local
-  lightning_bob_data:
+  ord_data:
     driver: local
 
 networks:
