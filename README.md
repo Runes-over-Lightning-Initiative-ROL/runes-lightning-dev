@@ -42,7 +42,9 @@ Encourage collaboration with Bitcoin, Lightning, and Rune dev communities.
 **Dependencies:**
 - Docker & Docker Compose
 - Git
-- Python 3.10+ (for scripting & tooling)
+- **Go 1.21+** (for Lightning integration via LND)
+- **Rust 1.70+** (for Rune parsing and ord client)
+- Python 3.10+ (legacy scripting & tooling)
 - Node.js 18+ (optional, for front-end tools)
 
 ### 2. Clone the Repository
@@ -66,7 +68,15 @@ docker-compose build
 # Bitcoin Core
 sudo apt install bitcoind bitcoin-cli
 
-# Python dependencies
+# Go dependencies (for Lightning integration)
+cd go-lightning
+go mod download
+
+# Rust dependencies (for Rune tools)
+cd ../rust-rune
+cargo build
+
+# Python dependencies (legacy)
 pip install -r requirements.txt
 
 # Optional JS tools
@@ -94,45 +104,100 @@ bitcoind -regtest -daemon
 lightningd --network=regtest --lightning-dir=./lightning-data
 ```
 
+## 🏗 Programming Stack & Integration Strategy
+
+This project uses a **hybrid multi-language architecture** to bridge the on-chain Rune protocol with Lightning Network capabilities:
+
+### **Go (Primary: Lightning Integration)**
+- **Purpose**: Lightning Network integration via LND (Lightning Network Daemon)
+- **Rationale**: LND is the dominant Lightning implementation, written in Go
+- **Responsibilities**:
+  - Lightning channel management with Rune metadata
+  - Payment routing with Rune transfer data
+  - LND gRPC client integration
+  - Custom TLV (Type-Length-Value) encoding for Rune data
+
+### **Rust (Primary: Rune Protocol)**
+- **Purpose**: Rune serialization, parsing, and on-chain logic
+- **Rationale**: Ordinals protocol and Rune specification are Rust-based
+- **Responsibilities**:
+  - Rune creation and parsing using ord client
+  - Runestone decoding and validation
+  - Rune indexing and balance tracking
+  - Settlement and burn transaction generation
+
+### **Cross-Layer Integration**
+- **Initial Approach**: REST/gRPC APIs between Go and Rust services
+- **Future**: Direct message passing and shared memory for performance
+- **Data Flow**: Rust parses Runes → Go handles Lightning → Coordinated settlement
+
 ## 📦 Project Structure
 
 ```
 runes-lightning-dev/
-├── docs/                 # Protocol drafts, research notes
-├── specs/                # Draft Rune-over-Lightning specifications
-├── scripts/              # Helper scripts for testing & automation
-├── docker/               # Docker configs for Bitcoin & LN nodes
-├── examples/             # Example transactions & settlement flows
-├── tools/                # Rune parsing / LN integration utilities
-├── requirements.txt      # Python dependencies
-├── package.json          # JS tooling dependencies
-└── README.md             # This file
+├── go-lightning/         # Go-based Lightning integration (LND)
+│   ├── go.mod           # Go module dependencies
+│   ├── main.go          # Lightning service entry point
+│   └── ...              # LND integration code
+├── rust-rune/           # Rust-based Rune protocol tools
+│   ├── Cargo.toml       # Rust dependencies
+│   ├── src/             # Rust source code
+│   │   ├── main.rs      # CLI entry point
+│   │   ├── rune_parser.rs # Rune parsing logic
+│   │   ├── ord_client.rs   # Ord client integration
+│   │   └── settlement.rs   # Settlement/burn flows
+│   └── ...              # Rust tools and utilities
+├── docs/                # Protocol drafts, research notes
+├── specs/               # Draft Rune-over-Lightning specifications
+├── scripts/             # Helper scripts for testing & automation
+├── docker/              # Docker configs for Bitcoin & LN nodes
+├── examples/            # Example transactions & settlement flows
+├── tools/               # Cross-language integration utilities
+├── requirements.txt     # Python dependencies (legacy)
+├── package.json         # JS tooling dependencies
+└── README.md            # This file
 ```
 
 ## 🚀 Usage Examples
 
-### 1. Issue a Rune Asset on Regtest
+### 1. Create a Rune Asset (Rust)
 
 ```bash
-python scripts/issue_rune.py --name TEST --supply 1000000
+cd rust-rune
+cargo run -- create TEST 1000000
 ```
 
-### 2. Open a Rune-aware Lightning Channel
+### 2. Parse Rune Data (Rust)
 
 ```bash
-python scripts/open_channel.py --peer alice --rune TEST --amount 5000
+cd rust-rune
+cargo run -- parse <transaction-hash>
 ```
 
-### 3. Send Rune over Lightning
+### 3. Open Rune-aware Lightning Channel (Go)
 
 ```bash
-python scripts/send_rune_ln.py --from alice --to bob --amount 100
+cd go-lightning
+go run main.go --action=open-channel --peer=alice --rune=TEST --amount=5000
 ```
 
-### 4. Burn at Channel Close
+### 4. Send Rune over Lightning (Go + Rust)
 
 ```bash
-python scripts/close_channel_with_burn.py --channel-id 12345
+# Rust: Parse and validate Rune data
+cd rust-rune
+cargo run -- parse <rune-tx-hash>
+
+# Go: Send Lightning payment with Rune metadata
+cd ../go-lightning
+go run main.go --action=send-payment --from=alice --to=bob --amount=100 --rune=TEST
+```
+
+### 5. Burn Runes at Channel Close (Rust)
+
+```bash
+cd rust-rune
+cargo run -- burn --channel-id=12345 --amount=100
 ```
 
 ## 🤝 Contributing
